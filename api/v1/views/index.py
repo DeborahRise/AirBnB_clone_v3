@@ -20,7 +20,7 @@ def status():
 
 @app_views.route('/stats', strict_slashes=False)
 def stats():
-    _count ={
+    _count = {
         "amenities": storage.count("Amenity"),
         "cities": storage.count("City"),
         "places": storage.count("Place"),
