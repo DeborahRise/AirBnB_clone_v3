@@ -14,14 +14,14 @@ def get_states():
     all_states = []
     return jsonify(all_states.append([state.to_dict() for state in storage.all(State).values()]))
 
-@app.route(/api/v1/states/<state_id>, strict_slashes = False)
+@app_views.route(/api/v1/states/<state_id>, strict_slashes = False)
 def get_state(state_id):
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
     return jsonify(state.to_dict())
 
-@app.route(/api/v1/states/<state_id>, methods=['DELETE'], strict_slashes = False)
+@app_views.route(/api/v1/states/<state_id>, methods=['DELETE'], strict_slashes = False)
 def delete_state(state_id):
     state = storage.get(State, state_id)
     if state is None:
@@ -30,7 +30,7 @@ def delete_state(state_id):
     storage.save()
     return jsonify({}), 200
 
-@app.route(/api/v1/states, methods=['POST'], strict_slashes = False)
+@app_views.route(/api/v1/states, methods=['POST'], strict_slashes = False)
 def post_state():
     if not request.json:
         abort(400, "Not a JSON")
@@ -41,7 +41,7 @@ def post_state():
     storage.save()
     return jsonify(state.to_dict()), 201
 
-@app.route(/api/v1/states/<state_id>, methods=['PUT'], strict_slashes = False)
+@app_views.route(/api/v1/states/<state_id>, methods=['PUT'], strict_slashes = False)
 def put_state(state_id):
     state = storage.get(State, state_id)
     if state is None:
