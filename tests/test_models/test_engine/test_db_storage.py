@@ -86,3 +86,11 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """ Test that the db storage returns the correct object"""
+        new_get = State(name='Kogi')
+        new_get.save()
+        result = models.storage.get(State, new_get.id)
+        self.assertIs(result, new_get)
