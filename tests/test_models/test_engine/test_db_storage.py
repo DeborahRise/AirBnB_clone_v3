@@ -94,3 +94,7 @@ class TestFileStorage(unittest.TestCase):
         new_get.save()
         result = models.storage.get(State, new_get.id)
         self.assertIs(result, new_get)
+
+    @unittest.skipIf(models.storage != 'db', "not testing dbstorage")
+    def test_count(self):
+        """ Test if the count method for db storage works """
