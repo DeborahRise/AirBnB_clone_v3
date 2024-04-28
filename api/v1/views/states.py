@@ -56,7 +56,3 @@ def put_state(state_id):
         setattr(state, key, value)
     storage.save()
     return jsonify(state.to_dict()), 200
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
