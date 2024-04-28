@@ -90,10 +90,12 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
         """ Test that the db storage returns the correct object"""
-        new_get = State(name='Kogi')
-        new_get.save()
-        result = models.storage.get(State, new_get.id)
-        self.assertIs(result, new_get)
+        new_instance = State(name='Kogi')
+        models.storage.new(new_instance)
+        models.storage.save()
+        result = models.storage.get(State, new_instance.id)
+        self.assertEqual(new_instance.id, result.id)
+        self.assertEqual(new_instance.name, result.name)
 
     @unittest.skipIf(models.storage != 'db', "not testing dbstorage")
     def test_count(self):
