@@ -66,5 +66,5 @@ def update_user(user_id):
     for key, value in user_data.items():
         if key not in ["id", "email", "created_at", "updated_at"]:
             setattr(user_obj, key, value)
-    user_obj.save()
+            user_obj.save()
     return jsonify(user_obj.to_dict), 200
