@@ -51,9 +51,9 @@ def create_Amenity():
     """ Creates a City: POST /api/v1/states/<state_id>/cities """
     Amenity_obj = request.get_json(force=True, silent=True)
     if not Amenity_obj:
-        abort(404, "Not a JSON")
+        abort(400, "Not a JSON")
     if 'name' not in Amenity_obj:
-        abort(404, "Missing name")
+        abort(400, "Missing name")
     Amenity_data = Amenity(**Amenity_obj)
     Amenity_data.save()
     return jsonify(Amenity_data.to_dict()), 201
@@ -68,7 +68,7 @@ def update_Amenity(amenity_id):
         abort(404)
     Amenity_data = request.get_json(force=True, silent=True)
     if not Amenity_data:
-        abort(404, "Not a JSON")
+        abort(400, "Not a JSON")
     Amenity_obj.name = Amenity_data.get("name", Amenity_obj.name)
     Amenity_obj.save()
     return jsonify(Amenity_obj.to_dict()), 200
