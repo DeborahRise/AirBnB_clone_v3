@@ -14,7 +14,7 @@ def get_Amenities():
     """ Retrieves the list of all Amenity objects """
     Amenity_list = []
 
-    Amenity_obj = storage.all(Amenity)
+    Amenity_obj = storage.all(Amenity).values()
     if not Amenity_obj:
         abort(404)
     for a_menities in Amenity_obj:
