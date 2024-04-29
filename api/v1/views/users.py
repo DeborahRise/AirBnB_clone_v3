@@ -62,7 +62,8 @@ def update_user(user_id):
     user_data = request.get_json(force=True, silent=True)
     if not user_data:
         abort(400, "Not a JSON")
-    user_obj.first_name = user_data.get("name", user_obj.name)
     user_obj.password = user_data.get("password", user_obj.password)
+    user_obj.first_name = user_data.get("first_name", user_obj.first_name)
+    user_obj.last_name = user_data.get("last_name", user_obj.last_name)
     user_obj.save()
     return jsonify(user_obj.to_dict), 200
