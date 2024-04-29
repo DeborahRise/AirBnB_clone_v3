@@ -23,7 +23,8 @@ def get_Amenities():
     return jsonify(Amenity_list)
 
 
-@app_views.route("/amenities/<amenity_id>", strict_slashes=False, methods=["GET"])
+@app_views.route("/amenities/<amenity_id>", strict_slashes=False,
+                 methods=["GET"])
 def get_Amenity(amenity_id):
     """ Retrieves an amentiy object """
     Amenity_obj = storage.get(Amenity, amenity_id)
@@ -32,7 +33,8 @@ def get_Amenity(amenity_id):
     return jsonify(Amenity_obj.to_dict())
 
 
-@app_views.route("/amenities/<amenity_id>", strict_slashes=False, methods=["DELETE"])
+@app_views.route("/amenities/<amenity_id>", strict_slashes=False,
+                 methods=["DELETE"])
 def delete_Amenity(amenity_id):
     """ Deletes an amenitobject: DELETE /api/v1/cities/<city_id> """
     Amenity_obj = storage.get(Amenity, amenity_id)
@@ -57,7 +59,8 @@ def create_Amenity():
     return jsonify(Amenity_data.to_dict()), 201
 
 
-@app_views.route("/amenities/<amenity_id>", strict_slashes=False, methods=["PUT"])
+@app_views.route("/amenities/<amenity_id>", strict_slashes=False,
+                 methods=["PUT"])
 def update_Amenity(amenity_id):
     """ Updates a City object: PUT /api/v1/cities/<city_id> """
     Amenity_obj = storage.get(Amenity, amenity_id)
