@@ -63,7 +63,7 @@ def update_user(user_id):
     if not user_data:
         abort(400, "Not a JSON")
     user_obj.name = user_data.get("name", user_obj.name)
-    user_obj.password = user_data("password", user_obj.password)
+    user_obj.password = user_data.get("password", user_obj.password)
     # for key, value in user_data.items():
     #     if key not in ["id", "email", "created_at", "updated_at"]:
     #         setattr(user_obj, key, value)
