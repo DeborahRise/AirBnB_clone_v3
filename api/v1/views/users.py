@@ -21,7 +21,48 @@ def get_users():
 
 @app_views.route("/users/<user_id>", strict_slashes=False, methods=["GET"])
 def get_user(user_id):
+    """ Gets a user object """
     user_obj = storage.get(User, user_id)
     if user_obj is None:
         abort(404)
     return jsonify(user_obj.to_dict())
+
+
+@app_views.route("/users/<user_id>", strict_slashes=False, methods=["DELETE"])
+def delete_user(user_id):
+    """ Deletes a user object"""
+    user_obj = storage.get(User, user_id)
+    if user_obj is None:
+        abort(404)
+    storage.delete(user_obj)
+    storage.save()
+    return jsonify({}), 200
+
+
+@app_views.route("/users", strict_slashes=False, methods=["POST"])
+def create_user():
+    """ Create Users"""
+    user_obj = request.get_json(force=True, silent=True)
+    if not user_obj:
+        abort(400, "Not a JSON")
+    if 'email' not in user_obj:
+        abort(400, "Missing email")
+    if 'password' not in user_obj:
+        abort(400, "Missing password")
+    user_data = User(**user_obj)
+    user_data.save()
+    return jsonify(user_data.to_dict)
+
+
+@app_views.route("/users/<user_id>", strict_slashes=False, methods=["PUT"])
+def update_user(user_id):
+    """ Updates a User object: PUT /api/v1/users/<user_id> """
+    user_obj = storage.get(User, user_id)
+    if not user_obj:
+        abort(404)
+    user_data = request.get_json(force=True, silent=True)
+    if not user_data:
+        abort(400, "Not a JSON")
+    user_obj.name = user_data.get("name", user_obj.name)
+    user_obj.save()
+    return jsonify(user_obj.to_dict), 200
