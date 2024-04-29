@@ -7,13 +7,12 @@ from models.user import User
 from models import storage
 from flask import jsonify, request, abort
 
+
 @app_views.route("/users", strict_slashes=False, methods=["GET"])
 def get_users():
     """ retrieves  LIST of all users """
     listofusers = []
     all_users = storage.all(User).values()
-    if not all_users:
-        abort(404)
     for all_user in all_users:
         listofusers.append(all_user.to_dict())
     return jsonify(listofusers)
@@ -51,7 +50,7 @@ def create_user():
         abort(400, "Missing password")
     user_data = User(**user_obj)
     user_data.save()
-    return jsonify(user_data.to_dict)
+    return jsonify(user_data.to_dict), 201
 
 
 @app_views.route("/users/<user_id>", strict_slashes=False, methods=["PUT"])
