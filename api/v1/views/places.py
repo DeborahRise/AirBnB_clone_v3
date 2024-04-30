@@ -70,3 +70,13 @@ def create_place(city_id):
 @app_views("/places/<place_id>", strict-slashes=False,
            methods=["PUT"])
 def update_place(place_id):
+    """ Updates a Place object: PUT """
+    place_obj = storage.get(Place, place_id)
+    if not place_obj:
+        abort(404)
+    new_place_data = request.get_json(force=True, silent=True)
+    for key, value in new_place_data.items():
+        if key not in ["id", "user_id", "city_id", "created_at" "updated_at"]:
+            setattr(place_obj, key, value)
+    place_obj.save()
+    return jsonify(place_obj.to_dict()), 200
