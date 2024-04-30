@@ -34,7 +34,8 @@ def get_place(place_id):
     return jsonify(place_obj.to_dict())
 
 
-@app_views.route("/places/<place_id>", strict_slashes=False, methods=["DELETE"])
+@app_views.route("/places/<place_id>", strict_slashes=False,
+                 methods=["DELETE"])
 def delete_place(place_id):
     """ Deletes a Place object """
     place_obj = storage.get(Place, place_id)
@@ -64,11 +65,11 @@ def create_place(city_id):
         abort(400, "Missing name")
     new_place = Place(city_id=city_id, **place_obj)
     new_place.save()
-    return jsonify(new_place.to_dict()),201
+    return jsonify(new_place.to_dict()), 201
 
 
 @app_views.route("/places/<place_id>", strict_slashes=False,
-           methods=["PUT"])
+                 methods=["PUT"])
 def update_place(place_id):
     """ Updates a Place object: PUT """
     place_obj = storage.get(Place, place_id)
