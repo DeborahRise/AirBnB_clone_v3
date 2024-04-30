@@ -56,7 +56,7 @@ def create_city(state_id):
         abort(400, "Missing name")
     new_state = City(state_id=state.id, **data)
     new_state.save()
-    return new_state.to_dict(), 201
+    return jsonify(new_state.to_dict()), 201
 
 
 @app_views.route("/cities/<city_id>", strict_slashes=False, methods=["PUT"])
