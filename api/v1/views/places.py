@@ -54,7 +54,7 @@ def create_place(city_id):
         abort(404)
     place_obj = request.get_json(force=True, silent=True)
     if not place_obj:
-        abort(400, "Not a Json")
+        abort(400, "Not a JSON")
     if "user_id" not in place_obj:
         abort(400, "Missing user_id")
     user_obj = storage.get(User, place_obj.get("user_id"))
@@ -67,7 +67,7 @@ def create_place(city_id):
     return jsonify(new_place.to_dict()),201
 
 
-@app_views("/places/<place_id>", strict-slashes=False,
+@app_views.route("/places/<place_id>", strict_slashes=False,
            methods=["PUT"])
 def update_place(place_id):
     """ Updates a Place object: PUT """
@@ -75,6 +75,8 @@ def update_place(place_id):
     if not place_obj:
         abort(404)
     new_place_data = request.get_json(force=True, silent=True)
+    if not new_place_data:
+        abort(400, "Not a JSON")
     for key, value in new_place_data.items():
         if key not in ["id", "user_id", "city_id", "created_at" "updated_at"]:
             setattr(place_obj, key, value)
