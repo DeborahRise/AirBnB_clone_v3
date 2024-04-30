@@ -37,7 +37,7 @@ def get_place(place_id):
 def delete_place(place_id):
     """ Deletes a Place object """
     place_obj = storage.get(Place, place_id)
-    if place_id is None:
+    if place_obj is None:
         abort(404)
     storage.delete(place_obj)
     storage.save()
