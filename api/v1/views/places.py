@@ -62,6 +62,11 @@ def create_place(city_id):
         abort(404)
     if "name" not in place_obj:
         abort(400, "Missing name")
-    new_place = Place(**place_obj)
+    new_place = Place(city_id=city_id, **place_obj)
     new_place.save()
-    return jsonify(new_place.to_dict())
+    return jsonify(new_place.to_dict()),201
+
+
+@app_views("/places/<place_id>", strict-slashes=False,
+           methods=["PUT"])
+def update_place(place_id):
