@@ -29,23 +29,22 @@ def get_amenitiesOfPlace(place_id):
 @app_views.route("/places/<place_id>/amenities/<amenity_id>", strict_slashe=False,
                  methods=["DELETE"])
 def delete_amenitiesOfPlace(place_id, amenity_id):
+    """ deleting the amenity obj in a unique place """
     place_obj = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
     amenity_obj = storage.get(Amenity, amenity_id)
     if not amenity_obj:
         abort(404)
-    # if amenity_obj not in place_obj.amenities:
-    #     abort(404)
     if storage_mode == 'db':
-        all_amenities = place_obj.amenities
-    
+        place_amenities = place_obj.amenities
     else:
-        all_amenities  = place_obj.amenities_id
-    for A in all_amenities:
+        place_amenities  = place_obj.amenities_id
+
+    for A in place_amenities:
         if A.id == amenity_id:
             A.delete()
             A.save()
         else:
             abort(404)
-    return jsonify({}), 200
+    return jsonify({}, 200)
