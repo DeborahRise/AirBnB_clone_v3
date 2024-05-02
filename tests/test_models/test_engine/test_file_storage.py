@@ -116,6 +116,7 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage == 'db', "not testing file storage")
     def test_get(self):
+        """ Test that return the obj for the related id """
         new_get = State(name='Rivers')
         models.storage.new(new_get)
         models.storage.save()
