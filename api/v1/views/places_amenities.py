@@ -30,18 +30,42 @@ def get_amenitiesOfPlace(place_id):
                  methods=["DELETE"])
 def delete_amenitiesOfPlace(place_id, amenity_id):
     """ deleting the amenity obj in a unique place """
-    obj_place = storage.get("Place", place_id)
-    obj_amenity = storage.get("Amenity", amenity_id)
-    if obj_amenity is None:
+    place_obj = storage.get(Place, place_id)
+    if not place_obj:
         abort(404)
-    if obj_place is None:
+    amenity_obj = storage.get(Amenity, amenity_id)
+    if not amenity_obj:
         abort(404)
-    amenities = obj_place.amenities
-    list_am = [am.id for am in amenities]
-    if amenity_id not in list_am:
+    if storage_mode == 'db':
+        place_amenities = place_obj.amenities
+    else:
+        place_amenities  = place_obj.amenities_id
+
+    for A in place_amenities:
+        if A.id == amenity_id:
+            A.delete()
+            A.save()
+        else:
+            abort(404)
+    return jsonify({}, 200)
+
+
+@app_views.route("places/<place_id>/amenities/<amenity_id>", strict_slashes=False,
+                 methods=["POST"])
+def link_amenitiesOfPlace(place_id, amenity_id):
+    """Link Amenity to a Place"""
+    place_obj = storage.get(Place, place_id)
+    if not place_obj:
         abort(404)
-    for am in amenities:
-        if am.id == amenity_id:
-            obj_amenity.delete()
-    storage.save()
-    return (jsonify({})), 200
+    amenity_obj = storage.get(Amenity, amenity_id)
+    if not amenity_obj:
+        abort(404)
+    if storage_mode == "db":
+        place_amenities = place_obj.amenities
+    else:
+        place_amenities = place_obj.amenities_id
+
+    if amenity_obj not in place_amenities:
+        place_amenities.append(amenity_obj)
+    else:
+        return jsonify(amenity_obj, 200)
