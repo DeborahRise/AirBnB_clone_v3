@@ -7,6 +7,9 @@ from models import storage
 from models.place import Place
 from models.amenity import Amenity
 from flask import jsonify, abort
+import os
+
+storage_mode = os.getenv("HBNB_TYPE_STORAGE")
 
 @app_views.route("places/<place_id>/amenities", strict_slashes=False, methods=["GET"])
 def get_amenitiesOfPlace(place_id):
@@ -14,8 +17,12 @@ def get_amenitiesOfPlace(place_id):
     if not place_obj:
         abort(404)
     amenity_list = []
-    all_amenities = storage.all(Amenity).values()
-    for A in all_amenities:
-        if A.place_id == place_id:
-            amenity_list.append(A.to_dict())
+    if storage_mode == 'db':
+        all_amenities = storage.all(Amenity).values()
+        for A in all_amenities:
+            if A.place_id == place_id:
+                amenity_list.append(A.to_dict())
+    else:
+        amenity_list = place_obj.amenity_ids
     return jsonify(amenity_list)
+
