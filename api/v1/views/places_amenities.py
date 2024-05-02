@@ -13,3 +13,9 @@ def get_amenitiesOfPlace(place_id):
     place_obj = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
+    amenity_list = []
+    all_amenities = storage.all(Amenity).values()
+    for A in all_amenities:
+        if A.place_id == place_id:
+            amenity_list.append(A.to_dict())
+    return jsonify(amenity_list)
