@@ -30,21 +30,21 @@ def get_amenitiesOfPlace(place_id):
                  methods=["DELETE"])
 def delete_amenitiesOfPlace(place_id, amenity_id):
     """ deleting the amenity obj in a unique place """
-    place_obj = storage.get(Place, place_id)
-    if not place_obj:
+    place = storage.get(Place, place_id)
+    if not place:
         abort(404)
-    amenity_obj = storage.get(Amenity, amenity_id)
-    if not amenity_obj:
+    amenity = storage.get(Amenity, amenity_id)
+    if not amenity:
         abort(404)
-    if storage_mode == 'db':
-        place_amenities = place_obj.amenities
+    if storage_mode == "db":
+        place_amenities = place.amenities
     else:
-        place_amenities  = place_obj.amenities_id
+        place_amenities = place.amenities_id
 
-    for A in place_amenities:
-        if A.id == amenity_id:
-            A.delete()
-            A.save()
+    for amenity in place_amenities:
+        if amenity.id == amenity_id:
+            amenity.delete()
+            amenity.save()
         else:
             abort(404)
     return jsonify({}, 200)
